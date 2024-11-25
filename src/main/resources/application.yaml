@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://time-tracker-postgres-1:5432/test
+    username: postgres
+    password: 2711
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+
+logging:
+  level:
+    liquibase: info
+    org.hibernate.SQL: debug

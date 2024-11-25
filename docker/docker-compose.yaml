@@ -1,0 +1,54 @@
+name: time-tracker
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=2711
+      - POSTGRES_DB=test
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.0
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/test
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: 2711
+    command: start-dev
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+
+  user:
+    container_name: user
+    build:
+      ../user-service
+    environment:
+      USER_PORT: 8082
+    ports:
+      - 8082:8081
+
+  tracker:
+    container_name: tracker
+    build:
+      ../tracker-service
+    environment:
+      TRACKER_PORT: 8083
+    ports:
+      - 8083:8081
+
+  project:
+    container_name: project
+    build:
+      ../project-service
+    environment:
+      PROJECT_PORT: 8081
+    ports:
+      - 8081:8081

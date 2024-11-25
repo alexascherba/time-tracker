@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: tracker-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://172.18.0.3:8080/realms/time-tracker
+
+  datasource:
+    url: jdbc:postgresql://time-tracker-postgres-1:5432/test
+    username: postgres
+    password: 2711
+    driver-class-name: org.postgresql.Driver
+server:
+  port: 8083
